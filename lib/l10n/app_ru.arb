@@ -1,0 +1,18 @@
+{
+  "login": "Войти",
+  "email": "Email",
+  "password": "Пароль",
+  "loginWithGoogle": "Войти через Google",
+  "home": "Главная",
+  "settings": "Настройки",
+  "myBusinesses": "Мои компании",
+  "theme": "Тема",
+  "language": "Язык",
+  "logout": "Выйти",
+  "system": "Системная",
+  "light": "Светлая",
+  "dark": "Темная",
+  "english": "Английский",
+  "russian": "Русский",
+  "noName": "Без имени"
+}

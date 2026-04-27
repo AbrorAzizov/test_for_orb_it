@@ -1,0 +1,18 @@
+{
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "loginWithGoogle": "Login with Google",
+  "home": "Home",
+  "settings": "Settings",
+  "myBusinesses": "My Businesses",
+  "theme": "Theme",
+  "language": "Language",
+  "logout": "Logout",
+  "system": "System",
+  "light": "Light",
+  "dark": "Dark",
+  "english": "English",
+  "russian": "Russian",
+  "noName": "No Name"
+}
