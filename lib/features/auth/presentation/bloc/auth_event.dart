@@ -17,6 +17,16 @@ class LoginRequested extends AuthEvent {
   List<Object?> get props => [email, password];
 }
 
+class RegisterRequested extends AuthEvent {
+  final String email;
+  final String password;
+
+  const RegisterRequested({required this.email, required this.password});
+
+  @override
+  List<Object?> get props => [email, password];
+}
+
 class GoogleLoginRequested extends AuthEvent {}
 
 class LogoutRequested extends AuthEvent {}

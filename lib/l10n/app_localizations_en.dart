@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
+  String get register => 'Register';
+
+  @override
   String get email => 'Email';
 
   @override
@@ -67,4 +70,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logoutSubtitle => 'Sign out of your account';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
 }

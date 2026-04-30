@@ -1,5 +1,6 @@
 {
   "login": "Войти",
+  "register": "Регистрация",
   "email": "Email",
   "password": "Пароль",
   "loginWithGoogle": "Войти через Google",
@@ -18,5 +19,7 @@
   "settingsSubtitle": "Настройте свои предпочтения",
   "themeSubtitle": "Выберите, как выглядит приложение",
   "languageSubtitle": "Выберите предпочтительный язык",
-  "logoutSubtitle": "Выйти из вашей учетной записи"
+  "logoutSubtitle": "Выйти из вашей учетной записи",
+  "dontHaveAccount": "Нет аккаунта?",
+  "alreadyHaveAccount": "Уже есть аккаунт?"
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:test_for_orb_it/core/di/injection_container.dart';
 import 'package:test_for_orb_it/features/auth/presentation/pages/login_page.dart';
+import 'package:test_for_orb_it/features/auth/presentation/pages/register_page.dart';
 import 'package:test_for_orb_it/features/home/presentation/bloc/home_bloc.dart';
 import 'package:test_for_orb_it/features/home/presentation/pages/home_page.dart';
 import 'package:test_for_orb_it/features/settings/presentation/pages/settings_page.dart';
@@ -14,6 +15,11 @@ final List<RouteBase> routesList = [
     path: RoutePaths.login,
     name: RouteNames.login,
     builder: (context, state) => const LoginPage(),
+  ),
+  GoRoute(
+    path: RoutePaths.register,
+    name: RouteNames.register,
+    builder: (context, state) => const RegisterPage(),
   ),
   ShellRoute(
     navigatorKey: GlobalKey<NavigatorState>(),

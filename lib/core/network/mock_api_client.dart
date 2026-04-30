@@ -71,6 +71,13 @@ class MockApiClient implements ApiClient {
           statusMessage: 'Unauthorized',
         );
       }
+    } else if (path == '/register') {
+      responseData = {
+        'id': '3',
+        'email': data['email'],
+        'name': data['name'],
+        'photoUrl': 'https://api.dicebear.com/7.x/avataaars/svg?seed=${data['name']}',
+      };
     } else if (path == '/login/google') {
       responseData = {
         'id': '2',

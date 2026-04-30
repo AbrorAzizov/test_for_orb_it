@@ -6,6 +6,7 @@ import 'package:test_for_orb_it/features/auth/domain/repositories/auth_repositor
 import 'package:test_for_orb_it/features/auth/domain/usecases/login_usecase.dart';
 import 'package:test_for_orb_it/features/auth/domain/usecases/login_with_google_usecase.dart';
 import 'package:test_for_orb_it/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:test_for_orb_it/features/auth/domain/usecases/register_usecase.dart';
 import 'package:test_for_orb_it/features/auth/presentation/bloc/auth_bloc.dart';
 
 void initAuthModule() {
@@ -13,6 +14,7 @@ void initAuthModule() {
   sl.registerFactory(
     () => AuthBloc(
       loginUseCase: sl(),
+      registerUseCase: sl(),
       loginWithGoogleUseCase: sl(),
       logoutUseCase: sl(),
       repository: sl(),
@@ -21,6 +23,7 @@ void initAuthModule() {
 
   // Use cases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
+  sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => LoginWithGoogleUseCase(sl()));
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
 

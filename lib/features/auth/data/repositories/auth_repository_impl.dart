@@ -29,6 +29,21 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, UserEntity>> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final user = await remoteDataSource.register(name, email, password);
+      await localDataSource.saveToken('mock_token_${user.id}');
+      return Right(user);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, UserEntity>> loginWithGoogle() async {
     try {
       final user = await remoteDataSource.loginWithGoogle();

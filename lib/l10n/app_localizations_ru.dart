@@ -12,6 +12,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get login => 'Войти';
 
   @override
+  String get register => 'Регистрация';
+
+  @override
   String get email => 'Email';
 
   @override
@@ -67,4 +70,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get logoutSubtitle => 'Выйти из вашей учетной записи';
+
+  @override
+  String get dontHaveAccount => 'Нет аккаунта?';
+
+  @override
+  String get alreadyHaveAccount => 'Уже есть аккаунт?';
 }

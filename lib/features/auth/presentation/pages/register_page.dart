@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_for_orb_it/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:test_for_orb_it/features/auth/presentation/bloc/auth_event.dart';
 import 'package:test_for_orb_it/features/auth/presentation/bloc/auth_state.dart';
 import 'package:test_for_orb_it/config/routes/route_paths.dart';
 import '../../../../l10n/app_localizations.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController(text: 'test@example.com');
-  final _passwordController = TextEditingController(text: 'password');
+class _RegisterPageState extends State<RegisterPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -39,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is Authenticated) {
-              context.go('/home');
+              context.go(RoutePaths.home);
             } else if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)),
@@ -53,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Welcome back',
+                      'Create Account',
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onSurface,
@@ -61,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Sign in to continue',
+                      'Join us today!',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -90,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                             _AuthTextField(
                               controller: _emailController,
                               icon: Icons.email_outlined,
-                              hintText: 'test@example.com',
+                              hintText: 'example@email.com',
                             ),
                             const SizedBox(height: 20),
                             Text(
@@ -115,7 +117,30 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Confirm Password',
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            _AuthTextField(
+                              controller: _confirmPasswordController,
+                              icon: Icons.lock_clock_outlined,
+                              hintText: '••••••••',
+                              obscureText: _obscureConfirmPassword,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                                  size: 20,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                                onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                              ),
+                            ),
+                            const SizedBox(height: 32),
                             SizedBox(
                               width: double.infinity,
                               height: 56,
@@ -131,8 +156,20 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: state is AuthLoading
                                     ? null
                                     : () {
+                                        if (_passwordController.text != _confirmPasswordController.text) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(content: Text('Passwords do not match')),
+                                          );
+                                          return;
+                                        }
+                                        if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+                                           ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(content: Text('Please fill all fields')),
+                                          );
+                                          return;
+                                        }
                                         context.read<AuthBloc>().add(
-                                              LoginRequested(
+                                              RegisterRequested(
                                                 email: _emailController.text,
                                                 password: _passwordController.text,
                                               ),
@@ -147,9 +184,9 @@ class _LoginPageState extends State<LoginPage> {
                                           color: colorScheme.onPrimary,
                                         ),
                                       )
-                                    : Text(
-                                        l10n.login, 
-                                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    : const Text(
+                                        'Register', 
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                       ),
                               ),
                             ),
@@ -158,15 +195,15 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  l10n.dontHaveAccount,
+                                  l10n.alreadyHaveAccount,
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: () => context.go(RoutePaths.register),
+                                  onPressed: () => context.go(RoutePaths.login),
                                   child: Text(
-                                    'Register',
+                                    l10n.login,
                                     style: TextStyle(
                                       color: colorScheme.primary,
                                       fontWeight: FontWeight.bold,
@@ -174,56 +211,6 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Expanded(child: Divider(color: colorScheme.outlineVariant)),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                                  child: Text(
-                                    'OR', 
-                                    style: theme.textTheme.labelSmall?.copyWith(
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(child: Divider(color: colorScheme.outlineVariant)),
-                              ],
-                            ),
-                            const SizedBox(height: 24),
-                            SizedBox(
-                              width: double.infinity,
-                              height: 56,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  side: BorderSide(color: colorScheme.outline),
-                                  foregroundColor: colorScheme.onSurface,
-                                ),
-                                onPressed: state is AuthLoading
-                                    ? null
-                                    : () => context.read<AuthBloc>().add(GoogleLoginRequested()),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.network(
-                                      'https://www.vectorlogo.zone/logos/google/google-icon.svg',
-                                      height: 24,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Text(
-                                      l10n.loginWithGoogle,
-                                      style: theme.textTheme.titleMedium?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                        color: colorScheme.onSurface,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
                           ],
                         ),
