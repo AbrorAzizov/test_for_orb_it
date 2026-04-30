@@ -8,8 +8,9 @@ import 'route_paths.dart';
 class RouteGuards {
   static FutureOr<String?> authGuard(BuildContext context, GoRouterState state) async {
     final authRepository = sl<AuthRepository>();
-    final isAuthenticated = await authRepository.isAuthenticated();
+    final result = await authRepository.isAuthenticated();
     
+    final bool isAuthenticated = result.fold((_) => false, (isAuth) => isAuth);
     final isLoggingIn = state.uri.path == RoutePaths.login;
 
     if (!isAuthenticated && !isLoggingIn) {

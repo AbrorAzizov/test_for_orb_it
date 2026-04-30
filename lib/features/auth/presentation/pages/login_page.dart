@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_for_orb_it/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:test_for_orb_it/features/auth/presentation/bloc/auth_event.dart';
 import 'package:test_for_orb_it/features/auth/presentation/bloc/auth_state.dart';
-
 import '../../../../l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
@@ -31,9 +30,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
@@ -55,23 +55,23 @@ class _LoginPageState extends State<LoginPage> {
                       'Welcome back',
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Sign in to continue',
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 32),
                     Card(
                       elevation: 0,
-                      color: theme.colorScheme.surface,
+                      color: colorScheme.surfaceContainer,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: BorderSide(color: theme.colorScheme.outlineVariant),
+                        borderRadius: BorderRadius.circular(24),
+                        side: BorderSide(color: colorScheme.outlineVariant.withOpacity(0.5)),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(24.0),
@@ -80,7 +80,10 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Text(
                               l10n.email,
-                              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                              ),
                             ),
                             const SizedBox(height: 8),
                             _AuthTextField(
@@ -91,7 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(height: 20),
                             Text(
                               l10n.password,
-                              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                              ),
                             ),
                             const SizedBox(height: 8),
                             _AuthTextField(
@@ -103,29 +109,23 @@ class _LoginPageState extends State<LoginPage> {
                                 icon: Icon(
                                   _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                                   size: 20,
-                                  color: theme.colorScheme.onSurfaceVariant,
+                                  color: colorScheme.onSurfaceVariant,
                                 ),
                                 onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: const Text('Forgot password?'),
-                              ),
-                            ),
+
                             const SizedBox(height: 16),
                             SizedBox(
                               width: double.infinity,
-                              height: 54,
+                              height: 56,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF0F52FF),
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: colorScheme.primary,
+                                  foregroundColor: colorScheme.onPrimary,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
                                   elevation: 0,
                                 ),
@@ -140,35 +140,47 @@ class _LoginPageState extends State<LoginPage> {
                                             );
                                       },
                                 child: state is AuthLoading
-                                    ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                    ? SizedBox(
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2, 
+                                          color: colorScheme.onPrimary,
+                                        ),
                                       )
-                                    : Text(l10n.login, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    : Text(
+                                        l10n.login, 
+                                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                      ),
                               ),
                             ),
                             const SizedBox(height: 24),
                             Row(
                               children: [
-                                Expanded(child: Divider(color: theme.colorScheme.outlineVariant)),
+                                Expanded(child: Divider(color: colorScheme.outlineVariant)),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                                  child: Text('OR', style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                                  child: Text(
+                                    'OR', 
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
                                 ),
-                                Expanded(child: Divider(color: theme.colorScheme.outlineVariant)),
+                                Expanded(child: Divider(color: colorScheme.outlineVariant)),
                               ],
                             ),
                             const SizedBox(height: 24),
                             SizedBox(
                               width: double.infinity,
-                              height: 54,
+                              height: 56,
                               child: OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
-                                  side: BorderSide(color: theme.colorScheme.outlineVariant),
+                                  side: BorderSide(color: colorScheme.outline),
+                                  foregroundColor: colorScheme.onSurface,
                                 ),
                                 onPressed: state is AuthLoading
                                     ? null
@@ -178,12 +190,15 @@ class _LoginPageState extends State<LoginPage> {
                                   children: [
                                     SvgPicture.network(
                                       'https://www.vectorlogo.zone/logos/google/google-icon.svg',
-                                      height: 20,
+                                      height: 24,
                                     ),
                                     const SizedBox(width: 12),
                                     Text(
                                       l10n.loginWithGoogle,
-                                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                                      style: theme.textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: colorScheme.onSurface,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -222,36 +237,42 @@ class _AuthTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      style: TextStyle(color: colorScheme.onSurface),
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withOpacity(0.5)),
         prefixIcon: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(8),
+              color: colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, size: 20, color: theme.colorScheme.primary),
+            child: Icon(icon, size: 20, color: colorScheme.primary),
           ),
         ),
         suffixIcon: suffixIcon,
+        filled: true,
+        fillColor: colorScheme.surface,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.outlineVariant),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colorScheme.outlineVariant),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.outlineVariant),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colorScheme.outlineVariant),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.primary, width: 2),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(vertical: 18),
       ),
     );
   }

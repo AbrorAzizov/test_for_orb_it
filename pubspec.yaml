@@ -22,6 +22,7 @@ dependencies:
   dio: ^5.7.0
   intl: 0.20.2
   flutter_svg: ^2.0.10+1
+  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:

@@ -18,12 +18,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _onLoadHomeData(LoadHomeData event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
-    try {
-      final user = await getUserInfoUseCase(NoParams());
-      final businesses = await getBusinessesUseCase(NoParams());
-      emit(HomeLoaded(user: user, businesses: businesses));
-    } catch (e) {
-      emit(HomeError(e.toString()));
-    }
+    
+    final userResult = await getUserInfoUseCase(NoParams());
+    final businessesResult = await getBusinessesUseCase(NoParams());
+
+    userResult.fold(
+      (failure) => emit(HomeError(failure.message)),
+      (user) {
+        businessesResult.fold(
+          (failure) => emit(HomeError(failure.message)),
+          (businesses) => emit(HomeLoaded(user: user, businesses: businesses)),
+        );
+      },
+    );
   }
 }

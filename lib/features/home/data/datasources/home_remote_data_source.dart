@@ -14,31 +14,14 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<UserModel> getUserInfo() async {
-    await apiClient.get('/user/me');
-    return const UserModel(
-      id: '1',
-      email: 'test@example.com',
-      name: 'John Doe',
-      photoUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-    );
+    final response = await apiClient.get('/user/me');
+    return UserModel.fromJson(response.data);
   }
 
   @override
   Future<List<BusinessModel>> getBusinesses() async {
-    await apiClient.get('/businesses');
-    return [
-      const BusinessModel(
-        id: 'b1',
-        name: 'Coffee Shop',
-        description: 'Best coffee in town',
-        imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93',
-      ),
-      const BusinessModel(
-        id: 'b2',
-        name: 'Tech Solutions',
-        description: 'Software development services',
-        imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c',
-      ),
-    ];
+    final response = await apiClient.get('/businesses');
+    final List<dynamic> data = response.data;
+    return data.map((json) => BusinessModel.fromJson(json)).toList();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_for_orb_it/core/usecases/usecase.dart';
-import 'package:test_for_orb_it/features/auth/domain/entities/user_entity.dart';
 import 'package:test_for_orb_it/features/auth/domain/repositories/auth_repository.dart';
 import 'package:test_for_orb_it/features/auth/domain/usecases/login_usecase.dart';
 import 'package:test_for_orb_it/features/auth/domain/usecases/login_with_google_usecase.dart';
@@ -27,49 +26,44 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onAppStarted(AppStarted event, Emitter<AuthState> emit) async {
-    final isAuthenticated = await repository.isAuthenticated();
-    if (isAuthenticated) {
-      emit(const Authenticated(UserEntity(
-        id: '1',
-        email: 'test@example.com',
-        name: 'John Doe',
-        photoUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-      )));
-    } else {
-      emit(Unauthenticated());
-    }
+    final result = await repository.isAuthenticated();
+    result.fold(
+      (failure) => emit(Unauthenticated()),
+      (isAuthenticated) {
+        if (isAuthenticated) {
+          // In a real app, we would fetch the user profile here.
+          // For now, emit unauthenticated to show login screen as per prev logic
+          emit(Unauthenticated()); 
+        } else {
+          emit(Unauthenticated());
+        }
+      },
+    );
   }
 
   Future<void> _onLoginRequested(LoginRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
-    try {
-      final user = await loginUseCase(LoginParams(email: event.email, password: event.password));
-      if (user != null) {
-        emit(Authenticated(user));
-      } else {
-        emit(const AuthError('Login failed'));
-      }
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
+    final result = await loginUseCase(LoginParams(email: event.email, password: event.password));
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (user) => emit(Authenticated(user)),
+    );
   }
 
   Future<void> _onGoogleLoginRequested(GoogleLoginRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
-    try {
-      final user = await loginWithGoogleUseCase(NoParams());
-      if (user != null) {
-        emit(Authenticated(user));
-      } else {
-        emit(const AuthError('Google login failed'));
-      }
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
+    final result = await loginWithGoogleUseCase(NoParams());
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (user) => emit(Authenticated(user)),
+    );
   }
 
   Future<void> _onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) async {
-    await logoutUseCase(NoParams());
-    emit(Unauthenticated());
+    final result = await logoutUseCase(NoParams());
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (_) => emit(Unauthenticated()),
+    );
   }
 }

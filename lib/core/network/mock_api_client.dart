@@ -10,7 +10,37 @@ class MockApiClient implements ApiClient {
     CancelToken? cancelToken,
   }) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    return Response(requestOptions: RequestOptions(path: path), statusCode: 200);
+    dynamic data;
+
+    if (path == '/user/me') {
+      data = {
+        'id': '1',
+        'email': 'test@example.com',
+        'name': 'John Doe',
+        'photoUrl': 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
+      };
+    } else if (path == '/businesses') {
+      data = [
+        {
+          'id': 'b1',
+          'name': 'Coffee Shop',
+          'description': 'Best coffee in town',
+          'imageUrl': 'https://images.unsplash.com/photo-1509042239860-f550ce710b93',
+        },
+        {
+          'id': 'b2',
+          'name': 'Tech Solutions',
+          'description': 'Software development services',
+          'imageUrl': 'https://images.unsplash.com/photo-1519389950473-47ba0277781c',
+        },
+      ];
+    }
+
+    return Response(
+      data: data as T,
+      requestOptions: RequestOptions(path: path),
+      statusCode: 200,
+    );
   }
 
   @override
@@ -22,7 +52,39 @@ class MockApiClient implements ApiClient {
     CancelToken? cancelToken,
   }) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    return Response(requestOptions: RequestOptions(path: path), statusCode: 200);
+    dynamic responseData;
+
+    if (path == '/login') {
+      final email = data['email'];
+      final password = data['password'];
+      if (email == 'test@example.com' && password == 'password') {
+        responseData = {
+          'id': '1',
+          'email': 'test@example.com',
+          'name': 'Test User',
+          'photoUrl': 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test',
+        };
+      } else {
+        return Response(
+          requestOptions: RequestOptions(path: path),
+          statusCode: 401,
+          statusMessage: 'Unauthorized',
+        );
+      }
+    } else if (path == '/login/google') {
+      responseData = {
+        'id': '2',
+        'email': 'google_user@gmail.com',
+        'name': 'Google User',
+        'photoUrl': 'https://api.dicebear.com/7.x/avataaars/svg?seed=Google',
+      };
+    }
+
+    return Response(
+      data: responseData as T,
+      requestOptions: RequestOptions(path: path),
+      statusCode: 200,
+    );
   }
 
   @override

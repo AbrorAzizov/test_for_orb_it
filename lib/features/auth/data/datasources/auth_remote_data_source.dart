@@ -13,15 +13,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> login(String email, String password) async {
-    await apiClient.post('/login', data: {'email': email, 'password': password});
+    final response = await apiClient.post('/login', data: {'email': email, 'password': password});
     
-    if (email == 'test@example.com' && password == 'password') {
-      return const UserModel(
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        photoUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test',
-      );
+    if (response.statusCode == 200 && response.data != null) {
+      return UserModel.fromJson(response.data);
     } else {
       throw Exception('Invalid credentials');
     }
@@ -29,12 +24,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> loginWithGoogle() async {
-    await apiClient.post('/login/google');
-    return const UserModel(
-      id: '2',
-      email: 'google_user@gmail.com',
-      name: 'Google User',
-      photoUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Google',
-    );
+    final response = await apiClient.post('/login/google');
+    return UserModel.fromJson(response.data);
   }
 }
