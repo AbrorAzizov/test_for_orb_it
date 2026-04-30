@@ -55,4 +55,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noName => 'Без имени';
+
+  @override
+  String get settingsSubtitle => 'Настройте свои предпочтения';
+
+  @override
+  String get themeSubtitle => 'Выберите, как выглядит приложение';
+
+  @override
+  String get languageSubtitle => 'Выберите предпочтительный язык';
+
+  @override
+  String get logoutSubtitle => 'Выйти из вашей учетной записи';
 }

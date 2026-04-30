@@ -55,4 +55,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noName => 'No Name';
+
+  @override
+  String get settingsSubtitle => 'Customize your preferences';
+
+  @override
+  String get themeSubtitle => 'Choose how the app looks';
+
+  @override
+  String get languageSubtitle => 'Choose your preferred language';
+
+  @override
+  String get logoutSubtitle => 'Sign out of your account';
 }

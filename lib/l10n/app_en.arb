@@ -14,5 +14,9 @@
   "dark": "Dark",
   "english": "English",
   "russian": "Russian",
-  "noName": "No Name"
+  "noName": "No Name",
+  "settingsSubtitle": "Customize your preferences",
+  "themeSubtitle": "Choose how the app looks",
+  "languageSubtitle": "Choose your preferred language",
+  "logoutSubtitle": "Sign out of your account"
 }

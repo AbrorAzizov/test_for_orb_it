@@ -1,3 +1,4 @@
+import 'package:test_for_orb_it/core/network/api_client.dart';
 import 'package:test_for_orb_it/features/auth/data/models/user_model.dart';
 import 'package:test_for_orb_it/features/home/data/models/business_model.dart';
 
@@ -7,9 +8,13 @@ abstract class HomeRemoteDataSource {
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
+  final ApiClient apiClient;
+
+  HomeRemoteDataSourceImpl({required this.apiClient});
+
   @override
   Future<UserModel> getUserInfo() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await apiClient.get('/user/me');
     return const UserModel(
       id: '1',
       email: 'test@example.com',
@@ -20,7 +25,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<List<BusinessModel>> getBusinesses() async {
-    await Future.delayed(const Duration(milliseconds: 800));
+    await apiClient.get('/businesses');
     return [
       const BusinessModel(
         id: 'b1',

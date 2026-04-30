@@ -193,6 +193,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Name'**
   String get noName;
+
+  /// No description provided for @settingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize your preferences'**
+  String get settingsSubtitle;
+
+  /// No description provided for @themeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how the app looks'**
+  String get themeSubtitle;
+
+  /// No description provided for @languageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred language'**
+  String get languageSubtitle;
+
+  /// No description provided for @logoutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out of your account'**
+  String get logoutSubtitle;
 }
 
 class _AppLocalizationsDelegate

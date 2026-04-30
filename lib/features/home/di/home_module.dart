@@ -26,6 +26,6 @@ void initHomeModule() {
 
   // Data sources
   sl.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeRemoteDataSourceImpl(),
+    () => HomeRemoteDataSourceImpl(apiClient: sl()),
   );
 }
